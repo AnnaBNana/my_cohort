@@ -1,0 +1,86 @@
+{% extends "students/base.html" %}
+{% block content %}
+<!-- ################ -->
+<!-- add cohort form -->
+<!-- ################ -->
+<h1 class="ui centered header">Add a Cohort</h1>
+<div class="ui centered olive card" id="add_card">
+  <div class="content">
+    <div class="row">
+    </div>
+    <!-- ############################################### -->
+    <!-- error message, unique fields db conflict -->
+    <!-- ############################################### -->
+    {% if messages %}
+      <div class="ui negative tiny message">
+        <i class="close icon"></i>
+        <div class="header">
+          The database detected an error:
+        </div>
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <!-- ################################## -->
+    <!-- begin form info, cohort info -->
+    <!-- ################################## -->
+    <form class="ui form" action="{%url 'students:create'%}" method="post">
+      {% csrf_token %}
+      <div class="rows">
+        <h3 class="ui dividing header">Cohort</h3>
+        <div class="fields">
+          <div class="ten wide field">
+            <label>Start Date</label>
+            {{form.start_date}}
+          </div>
+          <div class="six wide field">
+            <label>Stack</label>
+            {{form.stack}}
+          </div>
+        </div>
+        <!-- ################################## -->
+        <!-- end cohort info, start instructor info-->
+        <!-- ################################## -->
+        <h3 class="ui dividing header inline">Instructors</h3>
+        <div class="fields">
+          <div class="sixteen wide field">
+            {{form.instructors}}
+          </div>
+        </div>
+        <input type="hidden" id="instructors" name="variable" value="{{ instructors }}">
+        <!-- ################################## -->
+        <!-- end instructor info, start student info-->
+        <!-- ################################## -->
+        <h3 class="ui dividing header inline">Students</h3>
+        <!-- <i class="right aligned olive add circle icon add_student"></i> -->
+        <div class="student_fields">
+          <div class="fields">
+            <div class="seven wide field">
+              <label>Name</label>
+              {{form.student_name1}}
+            </div>
+            <div class="eight wide field">
+              <label>Email</label>
+              {{form.student_email1}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <button class="ui right labeled icon button add_student" type="button">
+          <i class="black add icon"></i>
+          Add Student Field
+        </button>
+        <button class="ui right floated right labeled icon button" type="submit">
+          <i class="blue send icon"></i>
+          Add Cohort
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- ################### -->
+<!-- end add cohort form -->
+<!-- ################### -->
+{% endblock %}

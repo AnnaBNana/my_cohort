@@ -1,0 +1,34 @@
+{% extends "students/base.html" %}
+{% block content %}
+<h1 class="ui center aligned header">{{cohort.start_date}} {{cohort.stack}} cohort</h1>
+<div class="ui centered olive card" id="group_card">
+  <a href="{% url 'students:create_groups' id=cohort.id size=size %}">
+    <button class="ui right labeled icon button" type="button">
+      <i class="purple refresh icon"></i>
+      new groups
+    </button>
+  </a>
+  <table class="ui table">
+    <thead>
+      <th>student</th>
+      <th>email</th>
+      <th><a href="{% url 'students:groups' id=cohort.id size='2' %}">pairs</a></th>
+      <th><a href="{% url 'students:groups' id=cohort.id size='3' %}">group of 3</a></th>
+      <th><a href="{% url 'students:groups' id=cohort.id size='4' %}">group of 4</a></th>
+      <th><a href="{% url 'students:groups' id=cohort.id size='10' %}">halves</a></th>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <td>{{student.name}}</td>
+        <td>{{student.email}}</td>
+        <td>{{student.pairs}}</td>
+        <td>{{student.three_person}}</td>
+        <td>{{student.four_person}}</td>
+        <td>{{student.half_class}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My Cohort</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'students/semantic/dist/semantic.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'students/css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'students/semantic/dist/semantic.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'students/js/instructor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'students/js/cohort.js' %}"></script>
+    <script type="text/javascript" src="{% static 'students/js/navbar.js' %}"></script>
+  </head>
+  <body>
+    {% block menu %}
+      {% include "students/includes/navbar.html" %}
+    {% endblock  %}
+    {% block content %}{% endblock %}
+  </body>
+</html>

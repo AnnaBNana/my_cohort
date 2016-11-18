@@ -1,0 +1,62 @@
+{% extends "students/base.html" %}
+{% block content %}
+<!-- ################ -->
+<!-- add instructor form -->
+<!-- ################ -->
+<h1 class="ui centered header page_header">Add Instructors</h1>
+<div class="ui centered olive card" id="add_card">
+  <div class="content">
+    <div class="row">
+    </div>
+    <!-- ############################################### -->
+    <!-- error message, unique fields db conflict -->
+    <!-- ############################################### -->
+    {% if messages %}
+      <div class="ui negative tiny message">
+        <i class="close icon"></i>
+        <div class="header">
+          The database detected an error:
+        </div>
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form class="ui form" action="{%url 'students:create_instructor'%}" method="post">
+      {% csrf_token %}
+      <div class="rows">
+        <h3 class="ui dividing header inline">Instructors</h3>
+        <div class="instructor_fields">
+          <div class=" fields">
+            <div class="five wide field">
+              <label>Name</label>
+              {{form.instructor_name1}}
+            </div>
+            <div class="five wide field">
+              <label>Email</label>
+              {{form.instructor_email1}}
+            </div>
+            <div class="five wide field">
+              <label>Role</label>
+              {{form.instructor_role1}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <button class="ui right labeled icon button add_instructor" type="button">
+          <i class="black add icon"></i>
+          Add Instructor Field
+        </button>
+        <button class="ui right floated right labeled icon button" type="submit">
+          <i class="blue send icon"></i>
+          Add Instructors
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- ################### -->
+<!-- end add instructor form -->
+<!-- ################### -->
+{% endblock %}

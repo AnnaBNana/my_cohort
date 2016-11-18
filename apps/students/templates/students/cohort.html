@@ -1,0 +1,167 @@
+{% extends "students/base.html" %}
+{% block content %}
+<h1 class="ui center aligned header">{{cohort.start_date}} {{cohort.stack}} cohort</h1>
+<div class="ui centered olive card" id="add_card">
+  <div class="content">
+    <div class="row">
+    </div>
+    <!-- ############################################### -->
+    <!-- error message, unique fields db conflict -->
+    <!-- ############################################### -->
+    {% if messages %}
+      <div class="ui negative tiny message">
+        <i class="close icon"></i>
+        <div class="header">
+          The database detected an error:
+        </div>
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="rows">
+      <h2 class="ui header">Edit:</h2>
+      <form class="ui form" action="{%url 'students:update' id=cohort.id %}" method="post">
+        {% csrf_token %}
+        <div class="fields">
+          <div class="eight wide field">
+            {{cohort_form.start_date}}
+          </div>
+          <div class="eight wide field">
+            {{cohort_form.stack}}
+          </div>
+        </div>
+        <div class="row">
+          <a href="{% url 'students:cohorts' %}">
+            <button class="ui right labeled icon button" type="button">
+              <i class="inverted red undo icon"></i>
+              back
+            </button>
+          </a>
+          <button class="ui right floated right labeled icon button" type="submit">
+            <i class="blue send icon"></i>
+            update cohort
+          </button>
+        </div>
+      </form>
+      <h2 class="ui header">Instructors:</h2>
+      <table class="ui table">
+        <thead>
+          <th class="four wide">Name</th>
+          <th class="four wide">Email</th>
+          <th class="two wide">Role</th>
+          <th class="six wide right aligned">Action</th>
+        </thead>
+        <tbody>
+          {% for instructor in cohort.instructor_set.all %}
+          <tr>
+            <td>{{instructor.name}}</td>
+            <td>{{instructor.email}}</td>
+            <td>{{instructor.role}}</td>
+            <td class="right aligned">
+              <div class="row">
+                <a href="{% url 'students:instructor' id=instructor.id %}">
+                  <button class="ui right labeled icon button" type="button">
+                    <i class="blue pencil icon"></i>
+                    edit
+                  </button>
+                </a>
+                <button class="ui right labeled icon button remove_instructor" type="button" data-instructor-id="{{instructor.id}}" data-cohort-id="{{cohort.id}}">
+                  <i class="inverted red cancel icon"></i>
+                  remove
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button class="ui right labeled icon button add_instructors_button" type="button">
+        <i class="black add icon"></i>
+        add instructors
+      </button>
+      <form action="{% url 'students:append_instructor' id=cohort.id %}" method="post" class="add_instructors">
+        {% csrf_token %}
+        <div class="fields">
+          <div class="sixteen wide field">
+            {{form.instructors}}
+          </div>
+        </div>
+        <button class="ui right labeled icon button" type="submit">
+          <i class="blue send icon"></i>
+          submit
+        </button>
+      </form>
+      <input type="hidden" id="instructors" name="variable" value="{{ instructors }}">
+      <h2 class="ui header">Students:</h2>
+      <table class="ui table">
+        <thead>
+          <th class="five wide">Name</th>
+          <th class="five wide">Email</th>
+          <th class="four wide right aligned">Action</th>
+        </thead>
+        <tbody>
+          {% load custom_tags %}
+          {% for student in cohort.student_set.all|sort_by:'name'%}
+          <tr>
+            <td>{{student.name}}</td>
+            <td>{{student.email}}</td>
+            <td class="right aligned">
+              <div class="row">
+                <a href="{% url 'students:student' id=student.id cohort_id=cohort.id %}">
+                  <button class="ui right labeled icon button" type="button">
+                    <i class="blue pencil icon"></i>
+                    edit
+                  </button>
+                </a>
+                <button class="ui right labeled icon button remove_student" type="submit" data-student-id="{{student.id}}" data-cohort-id="{{cohort.id}}">
+                  <i class="inverted red cancel icon"></i>
+                  remove
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button class="ui right labeled icon button add_students_button" type="button">
+        <i class="black add icon"></i>
+        add students
+      </button>
+      <form action="{% url 'students:append_student' id=cohort.id %}" method="post" class="ui form add_students">
+        {% csrf_token %}
+        <div class="student_fields">
+          <div class="fields">
+            <div class="seven wide field">
+              <label>Name</label>
+              {{form.student_name1}}
+            </div>
+            <div class="eight wide field">
+              <label>Email</label>
+              {{form.student_email1}}
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="ui right labeled icon button add_student" type="button">
+            <i class="black add icon"></i>
+            Add Student Field
+          </button>
+          <button class="ui right labeled right floated icon button" type="submit">
+            <i class="blue send icon"></i>
+            submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+<div class="ui floating message hidden" id="warning_box">
+  <div class="header error_header">
+  </div>
+  <div class="row warning_buttons">
+    <button type="button" class="ui mini basic red button cancel_delete">Cancel</button>
+    <button type="button" class="ui right floated mini basic red button confirm_delete">Yes!</button>
+  </div>
+</div>
+{% endblock %}

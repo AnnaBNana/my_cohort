@@ -1,0 +1,54 @@
+{% extends "students/base.html" %}
+{% block content %}
+<h1 class="ui center aligned header">{{student.name}}</h1>
+<div class="ui centered olive card" id="add_card">
+
+  <div class="content">
+    <div class="row">
+    </div>
+    <!-- ############################################### -->
+    <!-- error message, unique fields db conflict -->
+    <!-- ############################################### -->
+    {% if messages %}
+      <div class="ui negative tiny message">
+        <i class="close icon"></i>
+        <div class="header">
+          The database detected an error:
+        </div>
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form class="ui form" action="{% url 'students:update_student' id=student.id cohort_id=cohort.id %}" method="post">
+      {% csrf_token %}
+      <div class="rows">
+        <div class="instructor_fields">
+          <div class=" fields">
+            <div class="eight wide field">
+              <label>Name</label>
+              {{form.name}}
+            </div>
+            <div class="eight wide field">
+              <label>Email</label>
+              {{form.email}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <a href="{{source}}">
+          <button class="ui right labeled icon button" type="button">
+            <i class="inverted red undo icon"></i>
+            back
+          </button>
+        </a>
+        <button class="ui right floated right labeled icon button" type="submit">
+          <i class="blue send icon"></i>
+          update student
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
