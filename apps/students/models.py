@@ -10,12 +10,12 @@ class CohortManager(models.Manager):
     def validateCohort(self, data):
         print "in validation models.py line 8", data
         return "success!"
-    def make_groups(self, id, *args):
+    def make_groups(self, id, half_class):
         students = self.get(id=id).student_set.all().order_by('?')
-        s_count = students.count()
-        for size in args:
-            if (s_count < (size * 2)):
-                return
+        student_count = students.count()
+        count = 1
+        group = 1
+        for size in range(1,5):
             count = 0
             group = 1
             for student in students:
@@ -26,7 +26,7 @@ class CohortManager(models.Manager):
                         student.three_person=group
                     elif size == 4:
                         student.four_person=group
-                    else:
+                    if size == half_class:
                         student.half_class=group
                     count += 1
                     student.save(force_update=True)

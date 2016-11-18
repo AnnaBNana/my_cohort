@@ -104,8 +104,9 @@ def groups(request, id, size):
 
 
 def create_groups(request, id, size):
-    half_class = Cohort.objects.get(id=id).student_set.all().count()/2
-    Cohort.objects.make_groups(id, 2,3,4,half_class)
+    class_count = Cohort.objects.get(id=id).student_set.all().count()
+    half_class = (class_count/2)+1 if class_count%2 else class_count/2
+    Cohort.objects.make_groups(id, half_class)
     return redirect(reverse('students:groups', kwargs={'id':id, 'size':size} ))
 
 
@@ -166,10 +167,10 @@ def create_cohort(request):
             else:
                 for err in errors:
                     messages.error(request, err)
+                break
         for id in request.POST.getlist('instructors'):
             i = Instructor.objects.get(id=id)
             i.cohort.add(cohort)
-        cohort.objects.make_groups(id, 2,3,4,half_class)
     return redirect(reverse('students:cohorts'))
 
 
